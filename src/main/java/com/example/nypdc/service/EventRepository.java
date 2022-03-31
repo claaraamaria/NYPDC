@@ -1,7 +1,10 @@
 package com.example.nypdc.service;
 
+import com.example.nypdc.model.Event;
 import com.mongodb.client.AggregateIterable;
-import org.bson.types.ObjectId;
+import com.mongodb.client.result.DeleteResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,12 +15,15 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Repository
 public class EventRepository {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventRepository.class);
 
     private static final String COLLECTION = "NYPDData";
 
@@ -34,7 +40,6 @@ public class EventRepository {
     }
 
     public List<Document> countEventByKY() {
-
         AggregateIterable<Document> findIterable = mongoTemplate.getCollection(COLLECTION)
                 .aggregate(List.of(new Document("$group",
                         new Document("_id", "$KY_CD")
@@ -43,11 +48,22 @@ public class EventRepository {
 
         Iterator<Document> iterator = findIterable.iterator();
         List<Document> results = new ArrayList<>();
-        iterator.forEachRemaining(r -> results.add(r));
+        iterator.forEachRemaining(r -> results.add(process(r)));
         return results;
     }
 
-    public void deleteEvent(String eventId) {
-        mongoTemplate.remove(query(where("CMPLNT_NUM").is(eventId)), COLLECTION);
+    private Document process(Document r) {
+        return new Document(Map.of("KY_CD", r.get("_id"), "numberOfApparition", r.get("count")));
     }
+
+    public DeleteResult deleteEvent(String eventId) {
+        return mongoTemplate.remove(query(where("CMPLNT_NUM").is(eventId)), COLLECTION);
+    }
+
+    public Document insertEvent(Event event) {
+        Document document = new Document(Map.of("CMPLNT_NUM", event.getComplaintID(),
+                                                "KY_CD", event.getOffenseCode()));
+        return mongoTemplate.insert(document, COLLECTION);
+    }
+
 }

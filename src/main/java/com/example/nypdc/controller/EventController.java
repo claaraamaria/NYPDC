@@ -1,8 +1,9 @@
 package com.example.nypdc.controller;
 
+import com.example.nypdc.model.Event;
 import com.example.nypdc.service.EventRepository;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,13 @@ public class EventController {
     }
 
     @DeleteMapping( "/{EventId}")
-    public void deleteEvent(@PathVariable("EventId") String EventId) {
-        eventRepository.deleteEvent(EventId);
+    public boolean deleteEvent(@PathVariable("EventId") String EventId) {
+        return eventRepository.deleteEvent(EventId).getDeletedCount() > 0;
+    }
+
+    @PostMapping
+    public Document insertEvent(@RequestBody Event event) {
+        return eventRepository.insertEvent(event);
     }
 
 }

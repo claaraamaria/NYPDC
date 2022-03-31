@@ -1,47 +1,34 @@
 package com.example.nypdc.model;
 
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-
-@Document(collection = "NYPDData")
 public class Event {
 
-    @MongoId
-    @NotNull
-    private String Id;
+  //  @JsonProperty("CMPLNT_NUM")
+    private String complaintID;
 
-    private Integer complaintID;
+  //  @JsonProperty("KY_CD")
+    private String offenseCode;
 
-    private Integer offenseCode;
-
-    public @NotNull String getId() {
-        return Id;
-    }
-
-    public void setId(@NotNull String id) {
-        Id = id;
-    }
-
-    public Integer getComplaintID() {
+    public String getComplaintID() {
         return complaintID;
     }
 
-    public void setComplaintID(Integer complaintID) {
+    public void setComplaintID(String complaintID) {
         this.complaintID = complaintID;
     }
 
-    public Integer getOffenseCode() {
+    public String getOffenseCode() {
         return offenseCode;
     }
 
-    public void setOffenseCode(Integer offenseCode) {
+    public void setOffenseCode(String offenseCode) {
         this.offenseCode = offenseCode;
     }
 
-    public Event(@NotNull String id, Integer complaintID, Integer offenseCode) {
-        Id = id;
-        this.complaintID = complaintID;
-        this.offenseCode = offenseCode;
+    @Override
+    public String toString() {
+        return "Event{" +
+                "complaintID='" + complaintID + '\'' +
+                ", offenseCode='" + offenseCode + '\'' +
+                '}';
     }
 }
