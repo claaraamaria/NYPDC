@@ -3,8 +3,6 @@ package com.example.nypdc.service;
 import com.example.nypdc.model.Event;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.result.DeleteResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -22,9 +20,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Repository
 public class EventRepository {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventRepository.class);
-
     private static final String COLLECTION = "NYPDData";
 
     @Autowired

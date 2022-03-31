@@ -1,11 +1,13 @@
 package com.example.nypdc.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Event {
 
-  //  @JsonProperty("CMPLNT_NUM")
+    @JsonProperty("CMPLNT_NUM")
     private String complaintID;
 
-  //  @JsonProperty("KY_CD")
+    @JsonProperty("KY_CD")
     private String offenseCode;
 
     public String getComplaintID() {
