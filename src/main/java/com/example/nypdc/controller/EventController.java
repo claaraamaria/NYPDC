@@ -48,7 +48,9 @@ public class EventController {
         if (event.getComplaintID() != null && event.getOffenseCode() != null) {
             return null;
         }
+
         Document document = new Document();
+
         if (event.getComplaintID() == null) {
             document.put("Error CMPLNT_NUM", "CMPLNT_NUM must be not null!");
         }
