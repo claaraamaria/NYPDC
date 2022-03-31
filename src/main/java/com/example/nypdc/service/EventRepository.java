@@ -1,6 +1,7 @@
 package com.example.nypdc.service;
 
 import com.mongodb.client.AggregateIterable;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Repository
 public class EventRepository {
@@ -30,7 +33,6 @@ public class EventRepository {
         return mongoTemplate.count(query, COLLECTION);
     }
 
-
     public List<Document> countEventByKY() {
 
         AggregateIterable<Document> findIterable = mongoTemplate.getCollection(COLLECTION)
@@ -43,5 +45,9 @@ public class EventRepository {
         List<Document> results = new ArrayList<>();
         iterator.forEachRemaining(r -> results.add(r));
         return results;
+    }
+
+    public void deleteEvent(String eventId) {
+        mongoTemplate.remove(query(where("CMPLNT_NUM").is(eventId)), COLLECTION);
     }
 }

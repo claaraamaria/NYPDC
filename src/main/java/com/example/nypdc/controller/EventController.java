@@ -1,12 +1,10 @@
 package com.example.nypdc.controller;
 
-import com.example.nypdc.model.Event;
 import com.example.nypdc.service.EventRepository;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +27,11 @@ public class EventController {
     @GetMapping("/stats/offenses")
     public List<Document> getNumberAllEventsGrouped() {
         return eventRepository.countEventByKY();
+    }
+
+    @DeleteMapping( "/{EventId}")
+    public void deleteEvent(@PathVariable("EventId") String EventId) {
+        eventRepository.deleteEvent(EventId);
     }
 
 }
